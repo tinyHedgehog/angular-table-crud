@@ -10,6 +10,8 @@ import { MaterialModule } from './material-module';
 import { ResizableTableComponent } from './resizable-table/resizable-table.component';
 import { ResizeColumnDirective } from './resizable-table/resize-column.derective';
 import { AppComponent } from './app.component';
+import { AppRouterModule } from './router/router.module';
+import { DetailedElementComponent } from './detailed-element/detailed-element.component';
 
 @NgModule({
   imports: [
@@ -20,9 +22,15 @@ import { AppComponent } from './app.component';
     MaterialModule,
     MatNativeDateModule,
     ReactiveFormsModule,
+    AppRouterModule,
   ],
   entryComponents: [ResizableTableComponent],
-  declarations: [AppComponent, ResizableTableComponent, ResizeColumnDirective],
+  declarations: [
+    AppComponent,
+    ResizableTableComponent,
+    ResizeColumnDirective,
+    DetailedElementComponent,
+  ],
   bootstrap: [AppComponent, ResizableTableComponent],
 })
 export class AppModule {}
