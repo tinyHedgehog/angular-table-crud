@@ -21,7 +21,15 @@
     >
       <span>{{ column }} </span>
     </th>
-    <td mat-cell *matCellDef="let element">{{ element[column] }}</td>
+    <td mat-cell *matCellDef="let element">
+      <a
+        *ngIf="column === 'name'; else withoutLink"
+        [routerLink]="['/element', element.position]"
+        [state]="{element}"
+        >{{ element[column] }}</a
+      >
+      <ng-template #withoutLink>{{ element[column] }}</ng-template>
+    </td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
