@@ -1,7 +1,3 @@
-.resizable-table {
-  width: 100%;
-}
-
 .mat-table {
   width: 100%;
   &.resizing {
@@ -17,7 +13,7 @@
       text-overflow: ellipsis;
     }
   }
-  .mat-header-cell {
+  .mat-sort-header {
     position: relative;
     &:not(:last-child) {
       .resize-holder {
