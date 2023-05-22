@@ -10,7 +10,7 @@ export interface PeriodicElement {
 }
 
 @Component({
-  selector: 'app-detailed-element',
+  selector: 'detailed-element',
   templateUrl: './detailed-element.component.html',
   styleUrls: ['./detailed-element.component.css'],
   providers: [DataService],

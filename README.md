@@ -2,6 +2,7 @@
 
 SPA consisting of main page with table and action buttons for CRUD operations.
 Detailed page could be accessed by clicking in element name or directly by navigating to `/element/:position`.
+In case there is no such url user will be redirected to `Page Not Found`.
 
 ## Install & Run
 

@@ -9,8 +9,9 @@ import { MaterialModule } from './material-module';
 import { ResizableTableComponent } from './resizable-table/resizable-table.component';
 import { ResizeColumnDirective } from './resizable-table/resize-column.derective';
 import { AppComponent } from './app.component';
-import { AppRouteringModule } from './app-routing.module';
+import { AppRouterModule } from './app-routing.module';
 import { DetailedElementComponent } from './detailed-element/detailed-element.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 @NgModule({
   imports: [
@@ -21,13 +22,14 @@ import { DetailedElementComponent } from './detailed-element/detailed-element.co
     MaterialModule,
     MatNativeDateModule,
     ReactiveFormsModule,
-    AppRouteringModule,
+    AppRouterModule,
   ],
   declarations: [
     AppComponent,
     ResizableTableComponent,
     ResizeColumnDirective,
     DetailedElementComponent,
+    PageNotFoundComponent,
   ],
   bootstrap: [AppComponent],
 })
