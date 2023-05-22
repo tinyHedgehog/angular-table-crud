@@ -8,18 +8,25 @@
   />
 </mat-form-field>
 <article class="table-header">
-  <button class="button-add-row" mat-button (click)="addRow()">Add Row</button>
+  <button class="button-add-row" mat-button (click)="dataService.addRow()">
+    Add Row
+  </button>
 </article>
-<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+<table
+  mat-table
+  [dataSource]="dataService.dataSource"
+  matSort
+  class="mat-elevation-z8"
+>
   <ng-container
     [matColumnDef]="col.key"
-    *ngFor="let col of columnsSchema; let i = index"
+    *ngFor="let col of columnsSchema; let i = index; let last = last"
   >
     <th
       mat-header-cell
       *matHeaderCellDef
       mat-sort-header
-      [resizeColumn]="true"
+      [resizeColumn]="!last"
       [index]="i"
     >
       {{ col.label }}
@@ -33,7 +40,7 @@
           <button
             mat-button
             class="button-remove"
-            (click)="removeElement(element.position)"
+            (click)="dataService.removeElement(element.position)"
           >
             Delete
           </button>
@@ -53,7 +60,7 @@
         <div class="btn-edit" *ngIf="col.key === 'isEdit'; else dataField">
           <button
             mat-button
-            (click)="element.isEdit = !element.isEdit; addElement()"
+            (click)="element.isEdit = !element.isEdit; dataService.addElement()"
           >
             Done
           </button>

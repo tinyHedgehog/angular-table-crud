@@ -1,10 +1,17 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes, RouterModule, provideRouter } from '@angular/router';
 
-const routes: Routes = [];
+import { ResizableTableComponent } from 'src/app/resizable-table/resizable-table.component';
+import { DetailedElementComponent } from 'src/app/detailed-element/detailed-element.component';
+
+const routes: Routes = [
+  { path: '', component: ResizableTableComponent },
+  { path: 'element/:id', component: DetailedElementComponent },
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [provideRouter(routes)],
 })
-export class AppRoutingModule { }
+export class AppRouteringModule {}

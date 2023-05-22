@@ -9,7 +9,7 @@ import { MaterialModule } from './material-module';
 import { ResizableTableComponent } from './resizable-table/resizable-table.component';
 import { ResizeColumnDirective } from './resizable-table/resize-column.derective';
 import { AppComponent } from './app.component';
-import { AppRouterModule } from './router/router.module';
+import { AppRouteringModule } from './app-routing.module';
 import { DetailedElementComponent } from './detailed-element/detailed-element.component';
 
 @NgModule({
@@ -21,7 +21,7 @@ import { DetailedElementComponent } from './detailed-element/detailed-element.co
     MaterialModule,
     MatNativeDateModule,
     ReactiveFormsModule,
-    AppRouterModule,
+    AppRouteringModule,
   ],
   declarations: [
     AppComponent,

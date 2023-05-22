@@ -5,17 +5,12 @@ import { Directive, OnInit, Renderer2, Input, ElementRef } from '@angular/core';
 })
 export class ResizeColumnDirective implements OnInit {
   @Input('resizeColumn') resizable: boolean;
-
   @Input() index: number;
 
   private startX: number;
-
   private startWidth: number;
-
   private column: HTMLElement;
-
   private table: HTMLElement;
-
   private pressed: boolean;
 
   constructor(private renderer: Renderer2, private el: ElementRef) {
@@ -29,7 +24,13 @@ export class ResizeColumnDirective implements OnInit {
       this.table = this.renderer.parentNode(thead);
 
       const resizer = this.renderer.createElement('span');
-      this.renderer.addClass(resizer, 'resize-holder');
+      this.renderer.setStyle(resizer, 'cursor', 'col-resize');
+      this.renderer.setStyle(resizer, 'width', '20px');
+      this.renderer.setStyle(resizer, 'height', '100%');
+      this.renderer.setStyle(resizer, 'position', 'absolute');
+      this.renderer.setStyle(resizer, 'right', '-10px');
+      this.renderer.setStyle(resizer, 'top', '0');
+      this.renderer.setStyle(resizer, 'z-index', '1');
       this.renderer.appendChild(this.column, resizer);
       this.renderer.listen(resizer, 'mousedown', this.onMouseDown);
       this.renderer.listen(this.table, 'mousemove', this.onMouseMove);

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-
-import data from '../../assets/mock-data.json';
+import { DataService } from '../resizable-table/data.service';
 
 export interface PeriodicElement {
   name: string;
@@ -14,20 +13,16 @@ export interface PeriodicElement {
   selector: 'app-detailed-element',
   templateUrl: './detailed-element.component.html',
   styleUrls: ['./detailed-element.component.css'],
+  providers: [DataService],
 })
 export class DetailedElementComponent implements OnInit {
-  localData: PeriodicElement[] = JSON.parse(
-    localStorage.getItem('data') || '[]'
-  );
-  dataSource: PeriodicElement[] =
-    (this.localData.length && this.localData) || data.elements;
   currentElement?: PeriodicElement;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute, public dataService: DataService) {}
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
-      this.currentElement = this.dataSource.find(
+      this.currentElement = this.dataService.dataSource.data.find(
         (elem) => elem.position.toString() === params['id']
       );
     });

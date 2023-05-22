@@ -15,17 +15,6 @@
   }
   .mat-sort-header {
     position: relative;
-    &:not(:last-child) {
-      .resize-holder {
-        cursor: col-resize;
-        width: 20px;
-        height: 100%;
-        position: absolute;
-        right: -10px;
-        top: 0;
-        z-index: 1;
-      }
-    }
   }
   .mat-cell,
   .mat-header-cell {
