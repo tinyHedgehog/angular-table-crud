@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   DataService,
   PeriodicElement,
@@ -13,13 +13,19 @@ import {
 export class DetailedElementComponent implements OnInit {
   currentElement?: PeriodicElement;
 
-  constructor(private route: ActivatedRoute, public dataService: DataService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    public dataService: DataService
+  ) {}
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
-      this.currentElement = this.dataService.dataSource.data.find(
-        (elem) => elem.position.toString() === params['position']
-      );
+      this.currentElement = this.dataService.dataSource.data.find((elem) => {
+        return elem.position.toString() === params['position'];
+      });
+
+      !this.currentElement && this.router.navigate(['404']);
     });
   }
 }

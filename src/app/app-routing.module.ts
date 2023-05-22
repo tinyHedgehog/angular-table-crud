@@ -6,9 +6,13 @@ import { DetailedElementComponent } from 'src/app/detailed-element/detailed-elem
 import { PageNotFoundComponent } from 'src/app/page-not-found/page-not-found.component';
 
 const routes: Routes = [
-  { path: '', component: ResizableTableComponent },
-  { path: 'element/:position', component: DetailedElementComponent },
-  { path: '**', component: PageNotFoundComponent },
+  { path: '', title: 'Elements Table', component: ResizableTableComponent },
+  {
+    path: 'element/:position',
+    title: 'Detailed Element',
+    component: DetailedElementComponent,
+  },
+  { path: '**', title: 'Page Not Found', component: PageNotFoundComponent },
 ];
 
 @NgModule({
