@@ -7,10 +7,13 @@
     #input
   />
 </mat-form-field>
+<article class="table-header">
+  <button class="button-add-row" mat-button (click)="addRow()">Add Row</button>
+</article>
 <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
   <ng-container
-    *ngFor="let column of displayedColumns; let i = index"
-    [matColumnDef]="column"
+    [matColumnDef]="col.key"
+    *ngFor="let col of columnsSchema; let i = index"
   >
     <th
       mat-header-cell
@@ -19,16 +22,48 @@
       [resizeColumn]="true"
       [index]="i"
     >
-      <span>{{ column }} </span>
+      {{ col.label }}
     </th>
     <td mat-cell *matCellDef="let element">
-      <a
-        *ngIf="column === 'name'; else withoutLink"
-        [routerLink]="['/element', element.position]"
-        [state]="{element}"
-        >{{ element[column] }}</a
-      >
-      <ng-template #withoutLink>{{ element[column] }}</ng-template>
+      <div [ngSwitch]="col.type" *ngIf="!element.isEdit">
+        <div class="btn-edit" *ngSwitchCase="'isEdit'">
+          <button mat-button (click)="element.isEdit = !element.isEdit">
+            Edit
+          </button>
+          <button
+            mat-button
+            class="button-remove"
+            (click)="removeElement(element.position)"
+          >
+            Delete
+          </button>
+        </div>
+        <span *ngSwitchDefault>
+          <a
+            *ngIf="col.key === 'name'; else withoutLink"
+            [routerLink]="['/element', element.position]"
+            [state]="{element}"
+          >
+            {{ element[col.key] }}</a
+          >
+          <ng-template #withoutLink> {{ element[col.key] }}</ng-template>
+        </span>
+      </div>
+      <div *ngIf="element.isEdit">
+        <div class="btn-edit" *ngIf="col.key === 'isEdit'; else dataField">
+          <button
+            mat-button
+            (click)="element.isEdit = !element.isEdit; addElement()"
+          >
+            Done
+          </button>
+        </div>
+        <ng-template #dataField>
+          <mat-form-field>
+            <input [type]="col.type" matInput [(ngModel)]="element[col.key]" />
+          </mat-form-field>
+        </ng-template>
+      </div>
     </td>
   </ng-container>
 

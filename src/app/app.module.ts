@@ -23,7 +23,6 @@ import { DetailedElementComponent } from './detailed-element/detailed-element.co
     ReactiveFormsModule,
     AppRouterModule,
   ],
-  entryComponents: [ResizableTableComponent],
   declarations: [
     AppComponent,
     ResizableTableComponent,

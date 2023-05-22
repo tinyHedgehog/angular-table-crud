@@ -16,13 +16,18 @@ export interface PeriodicElement {
   styleUrls: ['./detailed-element.component.css'],
 })
 export class DetailedElementComponent implements OnInit {
+  localData: PeriodicElement[] = JSON.parse(
+    localStorage.getItem('data') || '[]'
+  );
+  dataSource: PeriodicElement[] =
+    (this.localData.length && this.localData) || data.elements;
   currentElement?: PeriodicElement;
 
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
-      this.currentElement = data.elements.find(
+      this.currentElement = this.dataSource.find(
         (elem) => elem.position.toString() === params['id']
       );
     });
