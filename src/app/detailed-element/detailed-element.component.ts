@@ -23,7 +23,7 @@ export class DetailedElementComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.currentElement = this.dataService.dataSource.data.find(
-        (elem) => elem.position.toString() === params['id']
+        (elem) => elem.position.toString() === params['position']
       );
     });
   }

@@ -1,17 +1,17 @@
-<mat-form-field appearance="standard">
-  <mat-label>Filter</mat-label>
-  <input
-    matInput
-    (keyup)="applyFilter($event)"
-    placeholder="Search columns"
-    #input
-  />
-</mat-form-field>
-<article class="table-header">
+<div class="controls">
+  <mat-form-field appearance="standard">
+    <mat-label>Filter</mat-label>
+    <input
+      matInput
+      (keyup)="applyFilter($event)"
+      placeholder="Search columns"
+      #input
+    />
+  </mat-form-field>
   <button class="button-add-row" mat-button (click)="dataService.addRow()">
     Add Row
   </button>
-</article>
+</div>
 <table
   mat-table
   [dataSource]="dataService.dataSource"
@@ -26,6 +26,7 @@
       mat-header-cell
       *matHeaderCellDef
       mat-sort-header
+      [disabled]="last"
       [resizeColumn]="!last"
       [index]="i"
     >

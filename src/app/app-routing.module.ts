@@ -6,7 +6,7 @@ import { DetailedElementComponent } from 'src/app/detailed-element/detailed-elem
 
 const routes: Routes = [
   { path: '', component: ResizableTableComponent },
-  { path: 'element/:id', component: DetailedElementComponent },
+  { path: 'element/:position', component: DetailedElementComponent },
 ];
 
 @NgModule({

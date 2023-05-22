@@ -29,6 +29,6 @@ import { DetailedElementComponent } from './detailed-element/detailed-element.co
     ResizeColumnDirective,
     DetailedElementComponent,
   ],
-  bootstrap: [AppComponent, ResizableTableComponent],
+  bootstrap: [AppComponent],
 })
 export class AppModule {}
