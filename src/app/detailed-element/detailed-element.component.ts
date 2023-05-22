@@ -1,18 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { DataService } from '../resizable-table/data.service';
-
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
+import {
+  DataService,
+  PeriodicElement,
+} from '../resizable-table/shared/data.service';
 
 @Component({
   selector: 'detailed-element',
   templateUrl: './detailed-element.component.html',
-  styleUrls: ['./detailed-element.component.css'],
   providers: [DataService],
 })
 export class DetailedElementComponent implements OnInit {

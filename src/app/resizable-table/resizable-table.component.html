@@ -1,5 +1,5 @@
 <div class="controls">
-  <mat-form-field appearance="standard">
+  <mat-form-field>
     <mat-label>Filter</mat-label>
     <input
       matInput
@@ -14,8 +14,8 @@
 </div>
 <table
   mat-table
-  [dataSource]="dataService.dataSource"
   matSort
+  [dataSource]="dataService.dataSource"
   class="mat-elevation-z8"
 >
   <ng-container
@@ -62,13 +62,20 @@
           <button
             mat-button
             (click)="element.isEdit = !element.isEdit; dataService.addElement()"
+            [disabled]="disableSubmit(element.position)"
           >
             Done
           </button>
         </div>
         <ng-template #dataField>
           <mat-form-field>
-            <input [type]="col.type" matInput [(ngModel)]="element[col.key]" />
+            <input
+              matInput
+              [required]="col.required"
+              [type]="col.type"
+              [(ngModel)]="element[col.key]"
+              (change)="inputHandler($event, element.position, col.key)"
+            />
           </mat-form-field>
         </ng-template>
       </div>
