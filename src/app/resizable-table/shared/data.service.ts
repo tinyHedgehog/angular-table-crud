@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Subject, Observable } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 
 import data from './mock-data.json';
@@ -13,9 +12,6 @@ export class DataService {
   dataSource = new MatTableDataSource(
     (this.localData.length && this.localData) || this.ELEMENT_DATA
   );
-  private dataSubject = new Subject<PeriodicElement[]>();
-  dataObservable: Observable<PeriodicElement[]> =
-    this.dataSubject.asObservable();
 
   constructor() {}
 
@@ -28,18 +24,21 @@ export class DataService {
       isEdit: true,
     };
 
-    this.dataSource.data = [newElement, ...this.dataSource.filteredData];
+    this.dataSource.data = [newElement, ...this.dataSource.data];
   }
 
   addElement() {
-    this.dataSubject.next(this.dataSource.data);
+    localStorage.setItem('data', JSON.stringify(this.dataSource.data));
+
+    this.localData = JSON.parse(localStorage.getItem('data') || '[]');
   }
 
   removeElement(position: number) {
     this.dataSource.data = this.dataSource.data.filter(
       (element) => Number(element.position) !== Number(position)
     );
-    this.dataSubject.next(this.dataSource.data);
+    localStorage.setItem('data', JSON.stringify(this.dataSource.data));
+    this.localData = JSON.parse(localStorage.getItem('data') || '[]');
   }
 }
 

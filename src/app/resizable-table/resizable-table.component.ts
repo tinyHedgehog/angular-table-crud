@@ -1,11 +1,11 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
-import { Subscription } from 'rxjs';
 import {
   ColumnSchema,
   DataService,
   COLUMNS_SCHEMA,
+  PeriodicElement,
 } from './shared/data.service';
 
 @Component({
@@ -17,8 +17,8 @@ import {
 export class ResizableTableComponent implements AfterViewInit {
   columnsSchema: ColumnSchema[] = COLUMNS_SCHEMA;
   displayedColumns: string[] = this.columnsSchema.map((col) => col.key);
-  subscription: Subscription;
   inputValidation: { [key: string]: { [key: string]: boolean } } = {};
+  editField: string | number = '';
 
   constructor(public dataService: DataService) {}
 
@@ -26,19 +26,17 @@ export class ResizableTableComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngOnInit(): void {
-    this.subscription = this.dataService.dataObservable.subscribe((data) => {
-      localStorage.setItem('data', JSON.stringify(data));
-      this.dataService.localData = data;
-    });
+    if (!this.dataService.localData.length) {
+      localStorage.setItem(
+        'data',
+        JSON.stringify(this.dataService.ELEMENT_DATA)
+      );
+    }
   }
 
   ngAfterViewInit() {
     this.dataService.dataSource.sort = this.sort;
     this.dataService.dataSource.paginator = this.paginator;
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
   }
 
   applyFilter(event: Event) {
@@ -53,16 +51,36 @@ export class ResizableTableComponent implements AfterViewInit {
     this.inputValidation[position][key] = e.target.validity.valid;
   }
 
+  setEditField(position: number) {
+    this.dataService.dataSource.data = this.dataService.dataSource.data.map(
+      (element) => ({
+        ...element,
+        isEdit: Number(element.position) === Number(position),
+      })
+    );
+    this.editField = position;
+  }
+
   disableSubmit(position: number) {
+    const alreadySavedElements: PeriodicElement[] = JSON.parse(
+      localStorage.getItem('data') || '[]'
+    );
+
     if (this.inputValidation[position]) {
-      return (
-        this.dataService.localData.some(
-          (elem) => Number(elem.position) === Number(position)
-        ) ||
-        Object.values(this.inputValidation[position]).some(
-          (item) => item === false
-        )
-      );
+      return this.editField
+        ? Number(this.editField) !== Number(position) &&
+            (alreadySavedElements.some(
+              (elem) => Number(elem.position) === Number(position)
+            ) ||
+              Object.values(this.inputValidation[position]).some(
+                (item) => item === false
+              ))
+        : alreadySavedElements.some(
+            (elem) => Number(elem.position) === Number(position)
+          ) ||
+            Object.values(this.inputValidation[position]).some(
+              (item) => item === false
+            );
     }
     return false;
   }
