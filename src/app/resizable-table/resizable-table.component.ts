@@ -82,6 +82,6 @@ export class ResizableTableComponent implements AfterViewInit {
         ? this.editField !== position && (isDuplicate || isValid)
         : isDuplicate || isValid;
     }
-    return false;
+    return true;
   }
 }

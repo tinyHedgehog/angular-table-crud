@@ -3,14 +3,6 @@ import { MatTableDataSource } from '@angular/material/table';
 
 import data from './mock-data.json';
 
-const newElement = {
-  position: 0,
-  name: '',
-  weight: 0,
-  symbol: '',
-  isEdit: true,
-};
-
 @Injectable({ providedIn: 'root' })
 export class DataService {
   ELEMENT_DATA: PeriodicElement[] = data.elements;
@@ -24,6 +16,14 @@ export class DataService {
   constructor() {}
 
   addRow() {
+    const newElement = {
+      position: 0,
+      name: '',
+      weight: 0,
+      symbol: '',
+      isEdit: true,
+    };
+
     this.dataSource.data = [newElement, ...this.dataSource.data];
   }
 
