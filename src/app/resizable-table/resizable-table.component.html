@@ -40,6 +40,7 @@
             (click)="
               element.isEdit = !element.isEdit; setEditField(element.position)
             "
+            [disabled]="disableEdit()"
           >
             Edit
           </button>
@@ -67,7 +68,7 @@
           <button
             mat-button
             (click)="element.isEdit = !element.isEdit; dataService.addElement()"
-            [disabled]="disableSubmit(element.position)"
+            [disabled]="disableSubmit(+element.position)"
           >
             Done
           </button>

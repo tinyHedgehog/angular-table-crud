@@ -18,7 +18,7 @@ export class ResizableTableComponent implements AfterViewInit {
   columnsSchema: ColumnSchema[] = COLUMNS_SCHEMA;
   displayedColumns: string[] = this.columnsSchema.map((col) => col.key);
   inputValidation: { [key: string]: { [key: string]: boolean } } = {};
-  editField: string | number = '';
+  editField: number;
 
   constructor(public dataService: DataService) {}
 
@@ -55,32 +55,32 @@ export class ResizableTableComponent implements AfterViewInit {
     this.dataService.dataSource.data = this.dataService.dataSource.data.map(
       (element) => ({
         ...element,
-        isEdit: Number(element.position) === Number(position),
+        isEdit: element.position === position,
       })
     );
     this.editField = position;
   }
 
+  disableEdit() {
+    return this.dataService.dataSource.data.some((element) => element.isEdit);
+  }
+
   disableSubmit(position: number) {
-    const alreadySavedElements: PeriodicElement[] = JSON.parse(
+    const savedElements: PeriodicElement[] = JSON.parse(
       localStorage.getItem('data') || '[]'
+    );
+    const isDuplicate = savedElements.some(
+      (elem) => elem.position === position
     );
 
     if (this.inputValidation[position]) {
+      const isValid = Object.values(this.inputValidation[position]).some(
+        (item) => item === false
+      );
+
       return this.editField
-        ? Number(this.editField) !== Number(position) &&
-            (alreadySavedElements.some(
-              (elem) => Number(elem.position) === Number(position)
-            ) ||
-              Object.values(this.inputValidation[position]).some(
-                (item) => item === false
-              ))
-        : alreadySavedElements.some(
-            (elem) => Number(elem.position) === Number(position)
-          ) ||
-            Object.values(this.inputValidation[position]).some(
-              (item) => item === false
-            );
+        ? this.editField !== position && (isDuplicate || isValid)
+        : isDuplicate || isValid;
     }
     return false;
   }

@@ -3,6 +3,14 @@ import { MatTableDataSource } from '@angular/material/table';
 
 import data from './mock-data.json';
 
+const newElement = {
+  position: 0,
+  name: '',
+  weight: 0,
+  symbol: '',
+  isEdit: true,
+};
+
 @Injectable({ providedIn: 'root' })
 export class DataService {
   ELEMENT_DATA: PeriodicElement[] = data.elements;
@@ -16,26 +24,27 @@ export class DataService {
   constructor() {}
 
   addRow() {
-    const newElement = {
-      position: 0,
-      name: '',
-      weight: 0,
-      symbol: '',
-      isEdit: true,
-    };
-
     this.dataSource.data = [newElement, ...this.dataSource.data];
   }
 
   addElement() {
-    localStorage.setItem('data', JSON.stringify(this.dataSource.data));
+    localStorage.setItem(
+      'data',
+      JSON.stringify(
+        this.dataSource.data.map((element) => ({
+          ...element,
+          position: Number(element.position),
+          weight: Number(element.position),
+        }))
+      )
+    );
 
     this.localData = JSON.parse(localStorage.getItem('data') || '[]');
   }
 
   removeElement(position: number) {
     this.dataSource.data = this.dataSource.data.filter(
-      (element) => Number(element.position) !== Number(position)
+      (element) => element.position !== position
     );
     localStorage.setItem('data', JSON.stringify(this.dataSource.data));
     this.localData = JSON.parse(localStorage.getItem('data') || '[]');
@@ -47,6 +56,7 @@ export interface PeriodicElement {
   name: string;
   weight: number;
   symbol: string;
+  isEdit?: boolean;
 }
 
 export interface ColumnSchema {
