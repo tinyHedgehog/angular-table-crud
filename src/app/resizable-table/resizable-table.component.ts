@@ -41,6 +41,7 @@ export class ResizableTableComponent implements AfterViewInit {
         this.dataService.localData = JSON.parse(
           localStorage.getItem('data') || '[]'
         );
+        this.editField = 0;
       }
     );
   }
@@ -90,9 +91,9 @@ export class ResizableTableComponent implements AfterViewInit {
       );
 
       return this.editField
-        ? this.editField !== position && (isDuplicate || isValid)
+        ? Number(this.editField) !== position && (isDuplicate || isValid)
         : isDuplicate || isValid;
     }
-    return true;
+    return !this.editField || false;
   }
 }
