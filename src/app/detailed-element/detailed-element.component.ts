@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  DataService,
-  PeriodicElement,
-} from '../resizable-table/shared/data.service';
+import { DataService } from '../resizable-table/shared/data.service';
+import { PeriodicElement } from '../resizable-table/shared/data.model';
 
 @Component({
   selector: 'detailed-element',

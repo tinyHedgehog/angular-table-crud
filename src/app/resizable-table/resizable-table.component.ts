@@ -1,12 +1,13 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
+import { Subscription } from 'rxjs';
+import { DataService } from './shared/data.service';
 import {
-  ColumnSchema,
-  DataService,
-  COLUMNS_SCHEMA,
   PeriodicElement,
-} from './shared/data.service';
+  ColumnSchema,
+  COLUMNS_SCHEMA,
+} from './shared/data.model';
 
 @Component({
   selector: 'resizable-table',
@@ -19,6 +20,7 @@ export class ResizableTableComponent implements AfterViewInit {
   displayedColumns: string[] = this.columnsSchema.map((col) => col.key);
   inputValidation: { [key: string]: { [key: string]: boolean } } = {};
   editField: number;
+  private subscription: Subscription;
 
   constructor(public dataService: DataService) {}
 
@@ -32,6 +34,15 @@ export class ResizableTableComponent implements AfterViewInit {
         JSON.stringify(this.dataService.ELEMENT_DATA)
       );
     }
+
+    this.subscription = this.dataService.tableState.subscribe(
+      (state: PeriodicElement[]) => {
+        localStorage.setItem('data', JSON.stringify(state));
+        this.dataService.localData = JSON.parse(
+          localStorage.getItem('data') || '[]'
+        );
+      }
+    );
   }
 
   ngAfterViewInit() {
