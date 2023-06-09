@@ -31,7 +31,13 @@ export class DataService {
     this.dataSource.data = [newElement, ...this.dataSource.data];
   }
 
-  addElement() {
+  addElement(editField: number) {
+    !editField &&
+      this.dataSource.sort?.sort({
+        id: '',
+        start: 'asc',
+        disableClear: false,
+      });
     this.tableSubject.next(
       this.dataSource.data.map((element) => {
         delete element.isNew;

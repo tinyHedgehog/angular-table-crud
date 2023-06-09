@@ -13,10 +13,11 @@
     mat-button
     (click)="
       dataService.addRow();
-      this.sort.sort({ id: 'position', start: 'asc', disableClear: true });
+      this.sort.sort({ id: '', start: 'asc', disableClear: false });
+      this.sort.sort({ id: 'position', start: 'asc', disableClear: false });
       this.paginator.firstPage()
     "
-    [disabled]="disableAdd()"
+    [disabled]="disableAdd() || disableEdit()"
   >
     Add Row
   </button>
@@ -76,7 +77,10 @@
         <div class="btn-edit" *ngIf="col.key === 'isEdit'; else dataField">
           <button
             mat-button
-            (click)="element.isEdit = !element.isEdit; dataService.addElement()"
+            (click)="
+              element.isEdit = !element.isEdit;
+              dataService.addElement(this.editField)
+            "
             [disabled]="disableSubmit(+element.position, element)"
           >
             Done
