@@ -25,9 +25,16 @@ export class DataService {
       weight: 0,
       symbol: '',
       isEdit: true,
+      isNew: true,
     };
 
     this.dataSource.data = [newElement, ...this.dataSource.data];
+  }
+
+  cancelChange() {
+    this.dataSource.data = this.dataSource.data.filter(
+      (element) => !element.isNew
+    );
   }
 
   addElement() {

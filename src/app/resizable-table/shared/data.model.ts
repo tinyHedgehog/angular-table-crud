@@ -4,6 +4,7 @@ export interface PeriodicElement {
   weight: number;
   symbol: string;
   isEdit?: boolean;
+  isNew?: boolean;
 }
 
 export interface ColumnSchema {

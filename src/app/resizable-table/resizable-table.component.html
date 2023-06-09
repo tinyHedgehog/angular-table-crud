@@ -72,6 +72,14 @@
           >
             Done
           </button>
+          <button
+            mat-button
+            (click)="
+              element.isEdit = !element.isEdit; dataService.cancelChange()
+            "
+          >
+            Cancel
+          </button>
         </div>
         <ng-template #dataField>
           <mat-form-field>
