@@ -1,0 +1,126 @@
+<div class="controls">
+  <mat-form-field>
+    <mat-label>Filter</mat-label>
+    <input
+      matInput
+      (keyup)="applyFilter($event)"
+      placeholder="Search columns"
+      #input
+    />
+  </mat-form-field>
+  <button
+    class="button-add-row"
+    mat-button
+    (click)="
+      dataService.addRow();
+      this.sort.sort({ id: '', start: 'asc', disableClear: false });
+      this.sort.sort({ id: 'position', start: 'asc', disableClear: false });
+      this.paginator.firstPage()
+    "
+    [disabled]="disableAdd() || disableEdit()"
+  >
+    Add Row
+  </button>
+</div>
+<table
+  mat-table
+  matSort
+  [dataSource]="dataService.dataSource"
+  class="mat-elevation-z8"
+>
+  <ng-container
+    [matColumnDef]="col.key"
+    *ngFor="let col of columnsSchema; let i = index; let last = last"
+  >
+    <th
+      mat-header-cell
+      *matHeaderCellDef
+      mat-sort-header
+      [disabled]="last || disableEdit()"
+      [resizeColumn]="!last"
+      [index]="i"
+    >
+      {{ col.label }}
+    </th>
+    <td mat-cell *matCellDef="let element">
+      <div class="cell-content" [ngSwitch]="col.type" *ngIf="!element.isEdit">
+        <div class="btn-edit" *ngSwitchCase="'isEdit'">
+          <button
+            mat-button
+            (click)="
+              element.isEdit = !element.isEdit; setEditField(element.position)
+            "
+            [disabled]="disableEdit()"
+          >
+            Edit
+          </button>
+          <button
+            mat-button
+            class="button-remove"
+            (click)="dataService.removeElement(element.position)"
+          >
+            Delete
+          </button>
+        </div>
+        <span *ngSwitchDefault>
+          <a
+            *ngIf="col.key === 'name'; else withoutLink"
+            [routerLink]="['/element', element.position]"
+            [state]="{element}"
+          >
+            {{ element[col.key] }}
+          </a>
+          <ng-template #withoutLink> {{ element[col.key] }}</ng-template>
+        </span>
+      </div>
+      <div *ngIf="element.isEdit">
+        <div class="btn-edit" *ngIf="col.key === 'isEdit'; else dataField">
+          <button
+            mat-button
+            (click)="
+              element.isEdit = !element.isEdit;
+              dataService.addElement(this.editField)
+            "
+            [disabled]="disableSubmit(+element.position, element)"
+          >
+            Done
+          </button>
+          <button mat-button (click)="cancelChange()">Cancel</button>
+        </div>
+        <ng-template #dataField>
+          <mat-form-field>
+            <input
+              matInput
+              [required]="col.required"
+              [type]="col.type"
+              [(ngModel)]="element[col.key]"
+              (input)="inputHandler($event, element.position, col.key)"
+              (keypress)="allowValidInput($event, col.key)"
+            />
+          </mat-form-field>
+          <div
+            class="validation-message"
+            *ngIf="
+              col.key === 'position' && validatePosition(+element.position)
+            "
+          >
+            Must be unique and valid.
+          </div>
+        </ng-template>
+      </div>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  <tr class="mat-row" *matNoDataRow>
+    <td class="mat-cell" [attr.colspan]="displayedColumns.length">No data.</td>
+  </tr>
+</table>
+<mat-paginator
+  [disabled]="disableEdit()"
+  [pageSizeOptions]="[5, 10, 20]"
+  showFirstLastButtons
+  aria-label="Select page of periodic elements"
+>
+</mat-paginator>
