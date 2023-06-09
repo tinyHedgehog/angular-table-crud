@@ -11,7 +11,11 @@
   <button
     class="button-add-row"
     mat-button
-    (click)="dataService.addRow()"
+    (click)="
+      dataService.addRow();
+      this.sort.sort({ id: 'position', start: 'asc', disableClear: true });
+      this.paginator.firstPage()
+    "
     [disabled]="disableAdd()"
   >
     Add Row
@@ -77,12 +81,7 @@
           >
             Done
           </button>
-          <button
-            mat-button
-            (click)="
-              element.isEdit = !element.isEdit; dataService.cancelChange()
-            "
-          >
+          <button mat-button (click)="dataService.cancelChange()">
             Cancel
           </button>
         </div>
@@ -117,6 +116,7 @@
   </tr>
 </table>
 <mat-paginator
+  [disabled]="disableEdit()"
   [pageSizeOptions]="[5, 10, 20]"
   showFirstLastButtons
   aria-label="Select page of periodic elements"
