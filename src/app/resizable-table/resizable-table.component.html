@@ -42,7 +42,7 @@
       {{ col.label }}
     </th>
     <td mat-cell *matCellDef="let element">
-      <div [ngSwitch]="col.type" *ngIf="!element.isEdit">
+      <div class="cell-content" [ngSwitch]="col.type" *ngIf="!element.isEdit">
         <div class="btn-edit" *ngSwitchCase="'isEdit'">
           <button
             mat-button
