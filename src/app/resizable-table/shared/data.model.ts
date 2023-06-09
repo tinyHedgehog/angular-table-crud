@@ -25,19 +25,19 @@ export const COLUMNS_SCHEMA: ColumnSchema[] = [
     key: 'name',
     type: 'text',
     label: 'Name',
-    required: false,
+    required: true,
   },
   {
     key: 'weight',
     type: 'number',
     label: 'Weight',
-    required: false,
+    required: true,
   },
   {
     key: 'symbol',
     type: 'text',
     label: 'Symbol',
-    required: false,
+    required: true,
   },
   {
     key: 'isEdit',
