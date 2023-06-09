@@ -68,7 +68,7 @@
           <button
             mat-button
             (click)="element.isEdit = !element.isEdit; dataService.addElement()"
-            [disabled]="disableSubmit(+element.position)"
+            [disabled]="disableSubmit(+element.position, element)"
           >
             Done
           </button>
@@ -88,7 +88,8 @@
               [required]="col.required"
               [type]="col.type"
               [(ngModel)]="element[col.key]"
-              (change)="inputHandler($event, element.position, col.key)"
+              (input)="inputHandler($event, element.position, col.key)"
+              (keypress)="allowValidInput($event, col.key)"
             />
           </mat-form-field>
         </ng-template>

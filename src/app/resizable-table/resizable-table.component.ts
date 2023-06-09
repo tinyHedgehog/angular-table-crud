@@ -8,6 +8,7 @@ import {
   ColumnSchema,
   COLUMNS_SCHEMA,
 } from './shared/data.model';
+import { DIGIT_0, DIGIT_9, PERIOD } from './resizable-table.constants';
 
 @Component({
   selector: 'resizable-table',
@@ -63,6 +64,20 @@ export class ResizableTableComponent implements AfterViewInit {
     this.inputValidation[position][key] = e.target.validity.valid;
   }
 
+  allowValidInput(e: any, colKey: string) {
+    if (colKey === 'position') {
+      return e.charCode >= DIGIT_0 && e.charCode <= DIGIT_9;
+    }
+    if (colKey === 'weight') {
+      return (
+        (e.charCode >= DIGIT_0 && e.charCode <= DIGIT_9) ||
+        e.charCode === PERIOD
+      );
+    }
+
+    return e.charCode;
+  }
+
   setEditField(position: number) {
     this.dataService.dataSource.data = this.dataService.dataSource.data.map(
       (element) => ({
@@ -77,13 +92,17 @@ export class ResizableTableComponent implements AfterViewInit {
     return this.dataService.dataSource.data.some((element) => element.isEdit);
   }
 
-  disableSubmit(position: number) {
+  disableSubmit(position: number, element: PeriodicElement) {
     const savedElements: PeriodicElement[] = JSON.parse(
       localStorage.getItem('data') || '[]'
     );
     const isDuplicate = savedElements.some(
       (elem) => elem.position === position
     );
+
+    if (!position || !element.weight || !element.symbol || !element.name) {
+      return true;
+    }
 
     if (this.inputValidation[position]) {
       const isValid = Object.values(this.inputValidation[position]).some(

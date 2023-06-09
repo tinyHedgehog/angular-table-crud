@@ -42,7 +42,7 @@ export class DataService {
       this.dataSource.data.map((element) => ({
         ...element,
         position: Number(element.position),
-        weight: Number(element.position),
+        weight: Number(element.weight),
       }))
     );
   }
