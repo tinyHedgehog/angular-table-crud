@@ -52,6 +52,19 @@ export class ResizableTableComponent implements AfterViewInit {
     this.dataService.dataSource.paginator = this.paginator;
   }
 
+  cancelChange() {
+    this.dataService.dataSource.data = this.dataService.dataSource.data.filter(
+      (element) => !element.isNew
+    );
+    this.dataService.dataSource.data = this.dataService.localData.map(
+      (elem) => ({
+        ...elem,
+        isEdit: false,
+      })
+    );
+    this.editField = 0;
+  }
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataService.dataSource.filter = filterValue.trim().toLowerCase();
@@ -96,7 +109,7 @@ export class ResizableTableComponent implements AfterViewInit {
     return this.dataService.dataSource.data.some((element) => element.isEdit);
   }
 
-  disableSubmit(position: number, element: PeriodicElement) {
+  getIsDuplicate(position: number) {
     const savedElements: PeriodicElement[] = JSON.parse(
       localStorage.getItem('data') || '[]'
     );
@@ -104,19 +117,45 @@ export class ResizableTableComponent implements AfterViewInit {
       (elem) => elem.position === position
     );
 
-    if (!position || !element.weight || !element.symbol || !element.name) {
-      return true;
-    }
+    return isDuplicate;
+  }
 
+  getInputValidation(
+    position: number,
+    isDuplicate: boolean,
+    checkedField?: string
+  ) {
     if (this.inputValidation[position]) {
-      const isValid = Object.values(this.inputValidation[position]).some(
-        (item) => item === false
-      );
+      const isValid = checkedField
+        ? !this.inputValidation[position][checkedField]
+        : Object.values(this.inputValidation[position]).some(
+            (item) => item === false
+          );
 
       return this.editField
         ? Number(this.editField) !== position && (isDuplicate || isValid)
         : isDuplicate || isValid;
     }
     return !this.editField || false;
+  }
+
+  validatePosition(position: number) {
+    const isDuplicate = this.getIsDuplicate(position);
+
+    if (!position) {
+      return true;
+    }
+
+    return this.getInputValidation(position, isDuplicate, 'position');
+  }
+
+  disableSubmit(position: number, element: PeriodicElement) {
+    const isDuplicate = this.getIsDuplicate(position);
+
+    if (!position || !element.weight || !element.symbol || !element.name) {
+      return true;
+    }
+
+    return this.getInputValidation(position, isDuplicate);
   }
 }

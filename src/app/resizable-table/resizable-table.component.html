@@ -67,8 +67,8 @@
             [routerLink]="['/element', element.position]"
             [state]="{element}"
           >
-            {{ element[col.key] }}</a
-          >
+            {{ element[col.key] }}
+          </a>
           <ng-template #withoutLink> {{ element[col.key] }}</ng-template>
         </span>
       </div>
@@ -81,9 +81,7 @@
           >
             Done
           </button>
-          <button mat-button (click)="dataService.cancelChange()">
-            Cancel
-          </button>
+          <button mat-button (click)="cancelChange()">Cancel</button>
         </div>
         <ng-template #dataField>
           <mat-form-field>
@@ -97,9 +95,9 @@
             />
           </mat-form-field>
           <div
+            class="validation-message"
             *ngIf="
-              col.key === 'position' &&
-              disableSubmit(+element.position, element)
+              col.key === 'position' && validatePosition(+element.position)
             "
           >
             Must be unique and valid.

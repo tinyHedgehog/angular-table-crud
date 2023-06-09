@@ -31,16 +31,6 @@ export class DataService {
     this.dataSource.data = [newElement, ...this.dataSource.data];
   }
 
-  cancelChange() {
-    this.dataSource.data = this.dataSource.data.filter(
-      (element) => !element.isNew
-    );
-    this.dataSource.data = this.localData.map((elem) => ({
-      ...elem,
-      isEdit: false,
-    }));
-  }
-
   addElement() {
     this.tableSubject.next(
       this.dataSource.data.map((element) => {
