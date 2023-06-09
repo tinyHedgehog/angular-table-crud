@@ -97,6 +97,14 @@
               (keypress)="allowValidInput($event, col.key)"
             />
           </mat-form-field>
+          <div
+            *ngIf="
+              col.key === 'position' &&
+              disableSubmit(+element.position, element)
+            "
+          >
+            Must be unique and valid.
+          </div>
         </ng-template>
       </div>
     </td>
@@ -104,6 +112,9 @@
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  <tr class="mat-row" *matNoDataRow>
+    <td class="mat-cell" [attr.colspan]="displayedColumns.length">No data.</td>
+  </tr>
 </table>
 <mat-paginator
   [pageSizeOptions]="[5, 10, 20]"
