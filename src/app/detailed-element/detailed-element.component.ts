@@ -5,6 +5,7 @@ import { PeriodicElement } from '../resizable-table/shared/data.model';
 
 @Component({
   selector: 'detailed-element',
+  styleUrls: ['detailed-element.component.scss'],
   templateUrl: './detailed-element.component.html',
   providers: [DataService],
 })

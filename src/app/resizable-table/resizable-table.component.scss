@@ -17,6 +17,8 @@
     cursor: col-resize;
   }
   .mat-cell {
+    white-space: pre;
+
     span {
       display: block;
       overflow: hidden;

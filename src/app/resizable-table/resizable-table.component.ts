@@ -88,6 +88,10 @@ export class ResizableTableComponent implements AfterViewInit {
     this.editField = position;
   }
 
+  disableAdd() {
+    return this.dataService.dataSource.data.some((element) => element.isNew);
+  }
+
   disableEdit() {
     return this.dataService.dataSource.data.some((element) => element.isEdit);
   }

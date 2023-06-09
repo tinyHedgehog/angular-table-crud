@@ -39,11 +39,14 @@ export class DataService {
 
   addElement() {
     this.tableSubject.next(
-      this.dataSource.data.map((element) => ({
-        ...element,
-        position: Number(element.position),
-        weight: Number(element.weight),
-      }))
+      this.dataSource.data.map((element) => {
+        delete element.isNew;
+        return {
+          ...element,
+          position: Number(element.position),
+          weight: Number(element.weight),
+        };
+      })
     );
   }
 
